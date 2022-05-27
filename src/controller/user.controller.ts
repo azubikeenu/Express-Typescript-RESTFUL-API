@@ -15,3 +15,11 @@ export async function createUserHandler(
     return res.status(409).json({ err: err.message });
   }
 }
+
+export function logOutHandler(req: Request, res: Response) {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: 'Success' });
+}
