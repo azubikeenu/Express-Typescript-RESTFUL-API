@@ -12,6 +12,7 @@ export interface ProductDocument extends mongoose.Document {
   description: string;
   createdAt: Date;
   updatedAt: Date;
+  productId: string;
 }
 
 const productSchema = new mongoose.Schema(
@@ -23,7 +24,7 @@ const productSchema = new mongoose.Schema(
     productId: {
       type: String,
       required: true,
-      default: () => `product_${nanoId()} `,
+      default: () => `product_${nanoId()}`,
       unique: true,
     },
     title: {

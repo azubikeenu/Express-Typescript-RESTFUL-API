@@ -82,11 +82,12 @@ export async function findProductHandler(
   req: Request<findProductInput['params']>,
   res: Response
 ) {
-  const { productId } = req.params;
+  const productId = req.params.productId;
   const product = await findProduct({ productId });
 
   if (!product) {
-    return res.status(404).send('Product Not Found');
+    return res.sendStatus(404);
   }
+
   return res.send(product);
 }

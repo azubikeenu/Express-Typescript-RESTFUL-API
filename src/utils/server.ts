@@ -2,7 +2,7 @@ import express from 'express';
 import routes from '../routes';
 import deserializeUser from '../middleware/deserializeUser';
 
-const createServer = () => {
+function createServer() {
   const app = express();
 
   app.use(express.json());
@@ -12,6 +12,6 @@ const createServer = () => {
   routes(app);
 
   return app;
-};
+}
 
 export default createServer;
