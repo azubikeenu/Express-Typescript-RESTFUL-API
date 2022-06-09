@@ -51,7 +51,7 @@ function routes(app: Express) {
   );
   app.get(
     '/api/products/:productId',
-    [requireUser, validate(findProductSchema)],
+    validate(findProductSchema),
     findProductHandler
   );
   app.delete(
