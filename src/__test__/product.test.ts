@@ -24,11 +24,12 @@ export const productPayload = {
 };
 
 describe('product', () => {
+  // startUp method
   beforeAll(async () => {
     const mongoServer = await MongoMemoryServer.create();
     await mongoose.connect(mongoServer.getUri());
   });
-
+  // tearDown method
   afterAll(async () => {
     await mongoose.disconnect();
     await mongoose.connection.close();
@@ -60,12 +61,13 @@ describe('product', () => {
         expect(statusCode).toBe(401);
       });
     });
-    describe('given the user is  logged in ', () => {
+    describe('given the user is logged in ', () => {
       it('should return a 200 status and create the product', async () => {
         const jwt = signJwt(userPayload);
         const { statusCode, body } = await supertest(app)
           .post('/api/products')
           .set('Authorization', `Bearer ${jwt}`)
+          .accept('application/json')
           .send(productPayload);
         expect(statusCode).toBe(200);
         expect(body).toEqual({
