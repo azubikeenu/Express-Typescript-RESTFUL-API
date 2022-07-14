@@ -32,6 +32,7 @@ export async function updateProductHandler(
   res: Response
 ) {
   const userId = res.locals.user._id;
+
   const { productId } = req.params;
   const update = req.body;
   try {

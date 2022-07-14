@@ -47,7 +47,7 @@ export async function reIssueAccessToken({
 
   // Use the returned user and the current session to generate a new access token
   const accessToken = signJwt(
-    { ...user, session: session._id },
+    { user, session: session._id },
     { expiresIn: config.get('accessTokenExpires') } // 15 minutes
   );
 

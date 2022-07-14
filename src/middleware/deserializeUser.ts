@@ -2,6 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
 import { reIssueAccessToken } from '../service/session.service';
 import { verifyJwt } from '../utils/jwt.utils';
+import { UserDocument } from '../models/user.model';
+
+type UserJwtPayload = {
+  user: UserDocument;
+};
 
 async function deserializeUser(
   req: Request,
@@ -19,20 +24,22 @@ async function deserializeUser(
   }
 
   const { decoded, expired } = verifyJwt(accessToken);
+
   // if the token is verified
   if (decoded) {
-    res.locals.user = decoded;
+    const mappedDecoded = decoded as UserJwtPayload;
+    res.locals.user = mappedDecoded.user;
     return next();
   }
   // if the token is not verifed and not exoired and the request header has a refresh token
   if (expired && refreshToken) {
     const newAccessToken = await reIssueAccessToken({ refreshToken });
-
     if (newAccessToken) {
       res.setHeader('x-access-token', newAccessToken);
     }
     const result = verifyJwt(newAccessToken as string);
-    res.locals.user = result.decoded;
+    const mappedDecoded = result.decoded as UserJwtPayload;
+    res.locals.user = mappedDecoded.user;
     return next();
   }
   return next();

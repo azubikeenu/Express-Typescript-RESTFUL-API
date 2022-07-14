@@ -19,19 +19,19 @@ export async function createSessionHandler(
   if (!user)
     return res
       .status(401)
-      .json({ error: true, message: 'Invalid image or password' });
+      .json({ error: true, message: 'Invalid email or password' });
   // Create the user session with email and password
   const session = await createSession(user._id, req.get('user-agent') || '');
   // Create the access token
   const accessToken = signJwt(
-    { ...user, session: session._id },
+    { user, session: session._id },
     {
       expiresIn: config.get('accessTokenExpires'),
     }
   );
   // Create the refresh token
   const refreshToken = signJwt(
-    { ...user, session: session._id },
+    { user, session: session._id },
     {
       expiresIn: config.get('refreshTokenExpires'),
     }
